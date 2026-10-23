@@ -1,0 +1,56 @@
+Module MainProgram()
+    Declarations
+        String routeID, peakHour, boardMore = "YES"
+        Integer distanceZone, passengerCount, maxCapacity
+        Real finalFare
+    
+    Output "Enter Route ID, Max Capacity, Current Count: "
+    Input routeID, maxCapacity, passengerCount
+    
+    // Validation: Check initial vehicle capacity boundary
+    If passengerCount >= maxCapacity Then
+        Output "WARNING: Vehicle Full. Boarding Closed."
+    End If
+    
+    While boardMore == "YES" AND passengerCount < maxCapacity
+        Output "Enter Zone (1:Short, 2:Med, 3:Long) & Peak (YES/NO): "
+        Input distanceZone, peakHour
+        
+        // Input Validation Loop for Distance Zone
+        While distanceZone < 1 OR distanceZone > 3
+            Output "ERROR: Invalid Zone. Please enter 1, 2, or 3: "
+            Input distanceZone
+        EndWhile
+        
+        finalFare = CalculateFare(distanceZone, peakHour)
+        passengerCount = passengerCount + 1
+        
+        Output "Boarded Successfully. Fare: Le ", finalFare
+        Output "Current Count: ", passengerCount, " / ", maxCapacity
+        
+        If passengerCount >= maxCapacity Then
+            Output "WARNING: Vehicle Full. Boarding Closed."
+        Else
+            Output "Board another passenger? (YES/NO): "
+            Input boardMore
+        End If
+    End While
+End Module
+
+Function Real CalculateFare(Integer zone, String isPeak)
+    Real fare
+    
+    If zone == 1 Then
+        fare = 5.00
+    ElseIf zone == 2 Then
+        fare = 10.00
+    ElseIf zone == 3 Then
+        fare = 15.00
+    EndIf
+    
+    If isPeak == "YES" OR isPeak == "yes" Then
+        fare = fare * 1.25
+    EndIf
+    
+    Return fare
+EndFunction
